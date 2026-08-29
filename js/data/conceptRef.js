@@ -37,8 +37,14 @@ export const CONCEPT_REF_DATA = {
 </tbody></table>`
       },
       {
-        title: '3. Java 예외 처리 (Exception Handling) 핵심 규칙',
+        title: '3. Java 예외 처리 (Exception Handling) 핵심 규칙 및 발생 원인',
         content: `<div class="concept-highlight">예외(Exception)가 발생했을 때 프로그램의 비정상 종료를 막고 정상 실행 흐름을 유지하도록 하는 기법</div>
+<table class="concept-table mb-md">
+<thead><tr><th>구분</th><th>주요 내용 및 기출 포인트</th></tr></thead>
+<tbody>
+<tr><td><b>예외 발생의 6대 원인</b></td><td>① 하드웨어 오동작 ② OS 설정 실수 ③ 라이브러리 손상 ④ 사용자 입력 오류 ⑤ 받아들일 수 없는 부적절한 연산 ⑥ 할당 불가 메모리 접근</td></tr>
+<tr><td><b>기본 처리 루틴</b></td><td>조건문(if) 분기 또는 내장 예외 처리 구문(<code>try~catch</code>)을 통한 에러 로깅 및 안전한 프로그램 종료</td></tr>
+</tbody></table>
 <div class="code-block"><pre>try {
     // 예외 발생 가능성이 있는 실행 코드
 } catch (ArithmeticException e) {
@@ -110,18 +116,26 @@ export const CONCEPT_REF_DATA = {
     color: '#06b6d4',
     sections: [
       {
-        title: '1. DDL (데이터 정의어) 핵심 구문 총정리',
+        title: '1. DDL (데이터 정의어) 핵심 구문 & 외래키 트리거 옵션',
         content: `<div class="concept-highlight">DDL (Data Define Language): SCHEMA, DOMAIN, TABLE, VIEW, INDEX 정의, 변경, 삭제</div>
 <table class="concept-table">
 <thead><tr><th>명령어</th><th>기본 형식</th><th>상세 설명</th></tr></thead>
 <tbody>
 <tr><td><b>CREATE SCHEMA</b></td><td><code>CREATE SCHEMA 스키마명 AUTHORIZATION 사용자_id;</code></td><td>스키마 정의 및 소유권자 지정</td></tr>
 <tr><td><b>CREATE DOMAIN</b></td><td><code>CREATE DOMAIN 도메인명 [AS] 데이터_타입 [DEFAULT 기본값] [CONSTRAINT 제약조건명 CHECK (범위값)];</code></td><td>임의의 속성이 가질 수 있는 값의 범위를 독립적인 도메인으로 정의</td></tr>
-<tr><td><b>CREATE TABLE</b></td><td><code>CREATE TABLE 테이블명 (<br>&nbsp;&nbsp;속성명 타입 [DEFAULT 값] [NOT NULL],<br>&nbsp;&nbsp;PRIMARY KEY(기본키_속성),<br>&nbsp;&nbsp;UNIQUE(대체키_속성),<br>&nbsp;&nbsp;FOREIGN KEY(외래키) REFERENCES 참조테이블(기본키),<br>&nbsp;&nbsp;CONSTRAINT 제약명 CHECK(조건식)<br>);</code></td><td>테이블 생성, 속성 정의, 기본키/외래키/체크 제약조건 설정</td></tr>
+<tr><td><b>CREATE TABLE</b></td><td><code>CREATE TABLE 테이블명 (<br>&nbsp;&nbsp;속성명 타입 [DEFAULT 값] [NOT NULL],<br>&nbsp;&nbsp;PRIMARY KEY(기본키_속성),<br>&nbsp;&nbsp;UNIQUE(대체키_속성),<br>&nbsp;&nbsp;FOREIGN KEY(외래키) REFERENCES 참조테이블(기본키)<br>&nbsp;&nbsp;&nbsp;&nbsp;[ON DELETE CASCADE | RESTRICT | SET NULL | SET DEFAULT]<br>&nbsp;&nbsp;&nbsp;&nbsp;[ON UPDATE CASCADE | RESTRICT | SET NULL | SET DEFAULT],<br>&nbsp;&nbsp;CONSTRAINT 제약명 CHECK(조건식)<br>);</code></td><td>테이블 생성, 속성 정의, 기본키/외래키/체크 제약조건 설정</td></tr>
 <tr><td><b>CREATE VIEW</b></td><td><code>CREATE VIEW 뷰명[(속성명,...)] AS SELECT문;</code></td><td>SELECT 쿼리 결과를 가상 테이블(뷰)로 정의</td></tr>
 <tr><td><b>CREATE INDEX</b></td><td><code>CREATE [UNIQUE] INDEX 인덱스명 ON 테이블명(속성명 [ASC|DESC]) [CLUSTER];</code></td><td>검속 속도 향상을 위한 인덱스 생성.<br>• <code>UNIQUE</code>: 중복값 불허<br>• <code>CLUSTER</code>: 클러스터드 인덱스</td></tr>
 <tr><td><b>ALTER TABLE</b></td><td>• <code>ALTER TABLE T ADD 속성명 타입;</code> (속성 추가)<br>• <code>ALTER TABLE T ALTER 속성명 타입;</code> (속성 변경)<br>• <code>ALTER TABLE T DROP COLUMN 속성명 [CASCADE];</code> (속성 삭제)</td><td>기존 테이블의 구조를 동적으로 변경</td></tr>
 <tr><td><b>DROP</b></td><td><code>DROP SCHEMA|DOMAIN|TABLE|VIEW|INDEX 이름 [CASCADE | RESTRICT];</code></td><td>정의된 객체를 완전히 삭제</td></tr>
+</tbody></table>
+<table class="concept-table mt-md">
+<thead><tr><th>외래키 참조 옵션</th><th>설명 및 동작</th></tr></thead>
+<tbody>
+<tr><td><code>CASCADE</code></td><td>부모 테이블의 튜플 삭제/수정 시 참조하는 자식 튜플도 <b>연쇄 삭제 / 수정</b></td></tr>
+<tr><td><code>RESTRICT</code></td><td>자식 테이블이 참조하고 있으면 부모 튜플의 삭제/수정을 <b>거부(취소)</b></td></tr>
+<tr><td><code>SET NULL</code></td><td>부모 튜플 삭제/수정 시 자식 외래키 값을 <b>NULL</b>로 변경</td></tr>
+<tr><td><code>SET DEFAULT</code></td><td>부모 튜플 삭제/수정 시 자식 외래키 값을 <b>기본값(DEFAULT)</b>으로 변경</td></tr>
 </tbody></table>`,
         trap: '<b>CASCADE:</b> 삭제할 요소를 참조 중인 다른 모든 개체까지 연쇄 삭제!<br><b>RESTRICT:</b> 삭제할 요소를 다른 개체가 참조 중이면 삭제 취소(거부)!'
       },
@@ -142,8 +156,15 @@ export const CONCEPT_REF_DATA = {
 </tbody></table>`
       },
       {
-        title: '3. DCL (데이터 제어어) & 트랜잭션 제어 총정리',
-        content: `<table class="concept-table">
+        title: '3. DCL (데이터 제어어) & 사용자 등급 & 트랜잭션 제어',
+        content: `<table class="concept-table mb-md">
+<thead><tr><th>사용자 등급</th><th>권한 범위</th><th>부여 구문</th></tr></thead>
+<tbody>
+<tr><td><b>DBA</b></td><td>데이터베이스 관리자 (모든 권한 소유)</td><td rowspan="3"><code>GRANT 등급 TO 사용자_ID [IDENTIFIED BY 암호];</code></td></tr>
+<tr><td><b>RESOURCE</b></td><td>테이블 및 인덱스, 뷰 등을 생성할 수 있는 권한</td></tr>
+<tr><td><b>CONNECT</b></td><td>데이터베이스 접속 및 데이터 검색/수정만 가능한 단순 사용자</td></tr>
+</tbody></table>
+<table class="concept-table">
 <thead><tr><th>명령어</th><th>구문 형식</th><th>역할 및 주요 옵션</th></tr></thead>
 <tbody>
 <tr><td><b>GRANT</b></td><td><code>GRANT 권한_리스트 ON 개체 TO 사용자 [WITH GRANT OPTION];</code></td><td>사용자에게 개체에 대한 권한(SELECT, INSERT 등) 부여<br>• <code>WITH GRANT OPTION</code>: 권한을 부여받은 사용자가 다른 사용자에게도 해당 권한을 재부여할 수 있음</td></tr>
@@ -187,14 +208,21 @@ export const CONCEPT_REF_DATA = {
     color: '#3b82f6',
     sections: [
       {
-        title: '1. DML (데이터 조작어) & SELECT문 실행 순서',
+        title: '1. DML (데이터 조작어) & SELECT문 실행 순서 & DISTINCTROW',
         content: `<div class="concept-highlight">DML: SELECT(검색), INSERT(삽입), UPDATE(수정), DELETE(삭제)</div>
-<div class="code-block"><pre>SELECT [ALL | DISTINCT] 속성명
+<div class="code-block"><pre>SELECT [ALL | DISTINCT | DISTINCTROW] 속성명
 FROM 테이블명
 WHERE 조건식
 GROUP BY 그룹화_속성
 HAVING 그룹_조건식
 ORDER BY 정렬_속성 [ASC | DESC];</pre></div>
+<table class="concept-table mb-md">
+<thead><tr><th>PREDICATE</th><th>중복 제거 대상 및 동작 설명</th></tr></thead>
+<tbody>
+<tr><td><code>ALL</code></td><td>모든 튜플 출력 (기본값)</td></tr>
+<tr><td><code>DISTINCT</code></td><td>선택된 <b>지정 속성(컬럼)</b>의 값이 중복되는 경우 1번만 출력</td></tr>
+<tr><td><code>DISTINCTROW</code></td><td>선택된 속성뿐만 아니라 <b>튜플 전체의 모든 컬럼</b>을 기준으로 중복 행 제거</td></tr>
+</tbody></table>
 <table class="concept-table">
 <thead><tr><th>실행 단계</th><th>절(Clause)</th><th>실행 내용</th></tr></thead>
 <tbody>
@@ -237,13 +265,14 @@ ORDER BY 정렬_속성 [ASC | DESC];</pre></div>
 </tbody></table>`
       },
       {
-        title: '4. 조인(JOIN) 완벽 정복 (INNER vs OUTER)',
+        title: '4. 조인(JOIN) 완벽 정복 (INNER vs OUTER vs THETA/NON-EQUI)',
         content: `<table class="concept-table">
 <thead><tr><th>조인 종류</th><th>문법 형식</th><th>동작 원리 및 특징</th></tr></thead>
 <tbody>
-<tr><td><b>EQUI JOIN</b><br>(등가 조인)</td><td><code>SELECT * FROM A, B<br>WHERE A.id = B.id;</code></td><td>공통 속성의 값이 같은 튜플을 결합. 결과에 공통 속성이 2번 나타남.</td></tr>
+<tr><td><b>EQUI JOIN</b><br>(동등 조인)</td><td><code>SELECT * FROM A, B<br>WHERE A.id = B.id;</code></td><td>공통 속성의 값이 같은 튜플을 결합. 결과에 공통 속성이 2번 나타남.</td></tr>
 <tr><td><b>NATURAL JOIN</b><br>(자연 조인)</td><td><code>SELECT * FROM A<br>NATURAL JOIN B;</code></td><td>동등 조인 후 중복되는 공통 속성을 제거하여 1번만 표시.</td></tr>
 <tr><td><b>JOIN ~ USING</b></td><td><code>SELECT * FROM A<br>JOIN B USING(id);</code></td><td>지정한 공통 속성을 기준으로 조인.</td></tr>
+<tr><td><b>NON-EQUI JOIN</b><br>(비동등 조인)</td><td><code>SELECT * FROM A, B<br>WHERE A.score BETWEEN B.min AND B.max;</code></td><td><code>=</code> 연산자가 아닌 비교연산자(<code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>BETWEEN</code>)를 사용하는 세타 조인.</td></tr>
 <tr><td><b>LEFT OUTER JOIN</b></td><td><code>SELECT * FROM A<br>LEFT OUTER JOIN B ON A.id = B.id;</code><br>(Oracle: <code>WHERE A.id = B.id(+)</code>)</td><td><b>왼쪽 테이블(A)의 모든 튜플</b> 출력 + 오른쪽(B)에 매칭되는 데이터가 없으면 <code>NULL</code>로 채움</td></tr>
 <tr><td><b>RIGHT OUTER JOIN</b></td><td><code>SELECT * FROM A<br>RIGHT OUTER JOIN B ON A.id = B.id;</code><br>(Oracle: <code>WHERE A.id(+) = B.id</code>)</td><td><b>오른쪽 테이블(B)의 모든 튜플</b> 출력 + 왼쪽(A)에 매칭 데이터 없으면 <code>NULL</code></td></tr>
 <tr><td><b>FULL OUTER JOIN</b></td><td><code>SELECT * FROM A<br>FULL OUTER JOIN B ON A.id = B.id;</code></td><td>양쪽 테이블의 모든 튜플 결합. 매칭되지 않는 쪽은 모두 <code>NULL</code>로 채워 출력.</td></tr>
@@ -267,6 +296,7 @@ ORDER BY 정렬_속성 [ASC | DESC];</pre></div>
 <tr><td><code>killall</code></td><td><code>killall [프로세스명]</code></td><td>동일한 이름을 가진 모든 프로세스를 한 번에 종료</td></tr>
 <tr><td><code>who</code></td><td><code>who</code></td><td>현재 시스템에 로그인(접속)해 있는 모든 사용자 정보 표시</td></tr>
 <tr><td><code>finger</code></td><td><code>finger [사용자계정]</code></td><td>특정 사용자의 상세 정보(로그인 위치, 쉘, 홈 디렉터리 등) 확인</td></tr>
+<tr><td><code>login / logout</code></td><td><code>login [ID]</code> / <code>logout</code></td><td>비밀번호 확인 후 세션 허용 / 쉘 세션 종료</td></tr>
 <tr><td><code>passwd</code></td><td><code>passwd [사용자명]</code></td><td>사용자 계정의 비밀번호 변경</td></tr>
 <tr><td><code>fsck</code></td><td><code>fsck [장치/경로]</code></td><td>파일 시스템의 무결성 검사 및 오류 복구 (File System Check)</td></tr>
 <tr><td><code>ping</code></td><td><code>ping [IP / 도메인]</code></td><td>원격 호스트와의 네트워크 연결 및 응답 상태 테스트 (ICMP 프로토콜)</td></tr>
@@ -328,6 +358,8 @@ ORDER BY 정렬_속성 [ASC | DESC];</pre></div>
 <tr><td><b>Python</b></td><td>대화형 인터프리터 언어, 간결한 문법 구조, 객체지향 지원</td></tr>
 <tr><td rowspan="2"><b>클라이언트용 스크립트</b></td><td><b>JavaScript (JS)</b></td><td>웹 브라우저에서 해석 및 실행, 웹 페이지 동적 제어, 비동기 통신</td></tr>
 <tr><td><b>VBScript</b></td><td>ActiveX를 통해 Microsoft사 애플리케이션 제어</td></tr>
+<tr><td rowspan="2"><b>기타 언어</b></td><td><b>Shell</b></td><td>Unix/Linux 계열 쉘에서 사용되는 명령어들의 조합으로 구성된 스크립트</td></tr>
+<tr><td><b>Basic</b></td><td>절차지향 기능 지원 대화형 인터프리터 언어, 초보자용 쉬운 문법 구조</td></tr>
 </tbody></table>`
       },
       {
@@ -343,3 +375,4 @@ ORDER BY 정렬_속성 [ASC | DESC];</pre></div>
     ]
   }
 };
+
