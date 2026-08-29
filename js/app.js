@@ -14,6 +14,7 @@ import {
 import { SparringQueue, GradingEngine } from './queue.js';
 import { StorageManager } from './storage.js';
 import { TraceViewer } from './traceViewer.js';
+import { CONCEPT_DATA } from './data/concepts.js';
 
 class App {
   constructor() {
@@ -139,6 +140,11 @@ class App {
             <div class="mode-title">오답 노트 복습</div>
             <div class="mode-desc">틀렸던 문제와 변수 추적표(Trace Table)를 다시 확인하며 취약 유형 집중 보강.</div>
           </div>
+          <div class="glass-card mode-card" data-mode="concepts" style="border: 1px solid rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.06);">
+            <div class="mode-icon">📘</div>
+            <div class="mode-title" style="color: #67e8f9;">핵심 개념 노트</div>
+            <div class="mode-desc">기출 분석 기반 4과목 핵심 개념 총정리. 함정 포인트와 암기 체크리스트 수록!</div>
+          </div>
         </div>
 
         ${overall.totalSessions > 0 ? `
@@ -164,6 +170,7 @@ class App {
         else if (mode === 'category') this.renderCategorySelect('category');
         else if (mode === 'mock') this.renderRoundSelect();
         else if (mode === 'wrong') this.startWrongNoteMode();
+        else if (mode === 'concepts') this.renderConceptNotes();
       });
     });
   }
@@ -522,6 +529,87 @@ class App {
 
     this.$('#retryBtn').addEventListener('click', () => this.renderCategorySelect('new1000'));
     this.$('#homeBtn').addEventListener('click', () => this.renderHome());
+  }
+
+  // ═══════════════════════════════════════════
+  //  CONCEPT NOTES VIEWER
+  // ═══════════════════════════════════════════
+  renderConceptNotes(activeTab = 'python') {
+    this.stopTimer();
+    const tabs = Object.keys(CONCEPT_DATA);
+    const data = CONCEPT_DATA[activeTab];
+
+    this.root.innerHTML = `
+      <div class="home-screen">
+        <div class="mb-lg">
+          <button class="btn btn-ghost btn-sm" id="backBtn">← 홈으로</button>
+        </div>
+
+        <div class="concept-header">
+          <span class="concept-header-icon">📘</span>
+          <h2><span class="text-gradient">핵심 개념 노트</span></h2>
+          <p>기출 35문항 + 변형 1,700문항 분석 기반 — 4과목 핵심 압축 정리</p>
+        </div>
+
+        <div class="concept-tabs">
+          ${tabs.map(key => {
+            const t = CONCEPT_DATA[key];
+            return `<div class="concept-tab ${key === activeTab ? 'active' : ''}" data-tab="${key}">
+              ${t.icon} ${t.label}
+            </div>`;
+          }).join('')}
+        </div>
+
+        <div class="concept-controls">
+          <button class="btn btn-ghost btn-sm" id="expandAllBtn">📂 전체 펼치기</button>
+          <button class="btn btn-ghost btn-sm" id="collapseAllBtn">📁 전체 접기</button>
+        </div>
+
+        <div id="conceptSections">
+          ${data.sections.map((sec, idx) => `
+            <div class="concept-section glass-card ${idx === 0 ? 'open' : ''}" data-idx="${idx}">
+              <div class="concept-section-header">
+                <span class="concept-section-title">${sec.title}</span>
+                <span class="concept-section-toggle">▼</span>
+              </div>
+              <div class="concept-section-body">
+                ${sec.content}
+                ${sec.trap ? `
+                <div class="concept-trap">
+                  <span class="concept-trap-icon">⚠️</span>
+                  <div class="concept-trap-text"><b>기출 함정:</b> ${sec.trap}</div>
+                </div>` : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    // Tab switching
+    this.$$('.concept-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        this.renderConceptNotes(tab.dataset.tab);
+      });
+    });
+
+    // Accordion toggle
+    this.$$('.concept-section-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const section = header.closest('.concept-section');
+        section.classList.toggle('open');
+      });
+    });
+
+    // Expand/Collapse all
+    this.$('#expandAllBtn').addEventListener('click', () => {
+      this.$$('.concept-section').forEach(s => s.classList.add('open'));
+    });
+    this.$('#collapseAllBtn').addEventListener('click', () => {
+      this.$$('.concept-section').forEach(s => s.classList.remove('open'));
+    });
+
+    this.$('#backBtn').addEventListener('click', () => this.renderHome());
   }
 
   _escape(str) {
