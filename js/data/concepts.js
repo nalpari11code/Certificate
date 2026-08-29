@@ -4,6 +4,60 @@
 // ============================================================
 
 export const CONCEPT_DATA = {
+  overall: {
+    icon: '📊',
+    label: '전체 기출 분석',
+    color: '#6366f1',
+    sections: [
+      {
+        title: '1. 기출 출제 경향 및 과목별 비중 분석',
+        content: `<div class="concept-highlight">기출 35문항 전수 분석 결과: 프로그래밍 실무 중심(Python + Java 60%) + 데이터베이스(SQL 25%) + 운영체제(Linux 15%)의 황금 비율로 출제됩니다.</div>
+<table class="concept-table">
+<thead><tr><th>과목</th><th>출제 문항 비중</th><th>핵심 출제 유형</th><th>난이도 및 공략 포인트</th></tr></thead>
+<tbody>
+<tr><td><b>Python</b></td><td>약 30% (9~11문)</td><td>반복문 제어, 슬라이싱, 트리 순회, 재귀함수, 내장 메서드</td><td>문법 함정(불변성, 콜론/인덴트) 및 출력 포맷 정확도 중요</td></tr>
+<tr><td><b>Java</b></td><td>약 30% (9~11문)</td><td>객체지향(상속, 오버라이딩, 다형성), 생성자 체이닝, 배열/문자열 조작</td><td>인스턴스 생성 흐름, 부모/자식 메서드 호출 우선순위 추적</td></tr>
+<tr><td><b>SQL</b></td><td>약 25% (8~9문)</td><td>SELECT 집계/정렬, GROUP BY ~ HAVING, JOIN, DDL/DML 빈칸</td><td>NULL 연산 처리, 실행 순서 이해, 서브쿼리 결과 예측</td></tr>
+<tr><td><b>Linux</b></td><td>약 15% (4~6문)</td><td>chmod 권한 계산, 프로세스 제어(kill, ps), 파일/디렉터리 탐색</td><td>8진수 권한 비트(r=4, w=2, x=1) 및 핵심 옵션 암기</td></tr>
+</tbody></table>`
+      },
+      {
+        title: '2. 프로그래밍 언어(Python vs Java) 공통점과 차이점',
+        content: `<table class="concept-table">
+<thead><tr><th>비교 항목</th><th>Python 🐍</th><th>Java ☕</th><th>실전 시험 유의점</th></tr></thead>
+<tbody>
+<tr><td><b>문법 구조</b></td><td>들여쓰기(Indentation) 기반 블록</td><td>중괄호 <code>{}</code> 및 세미콜론 <code>;</code></td><td>Python 들여쓰기 오류, Java 세미콜론/괄호 짝 확인</td></tr>
+<tr><td><b>자료형 선언</b></td><td>동적 타이핑 (변수 선언 시 타입 불필요)</td><td>정적 타이핑 (<code>int</code>, <code>String</code> 등 명시)</td><td>Java 형변환(Casting) 및 나눗셈 몫(정수 연산) 주의</td></tr>
+<tr><td><b>배열/리스트</b></td><td>가변 크기 List (<code>[ ]</code>), 슬라이싱 지원</td><td>고정 크기 Array (<code>new int[N]</code>)</td><td>Python 음수 인덱스(<code>-1</code>) vs Java 인덱스 초과(<code>IndexOutOfBounds</code>)</td></tr>
+<tr><td><b>출력 방식</b></td><td><code>print(..., end='')</code> (기본 개행)</td><td><code>System.out.print()</code> vs <code>println()</code></td><td>출력물 개행 유무 및 공백(띄어쓰기) 포맷 절대 실수 금지</td></tr>
+<tr><td><b>반복문 구조</b></td><td><code>for x in arr:</code>, <code>for i in range():</code></td><td><code>for(int i=0; i&lt;n; i++)</code>, 향상된 for</td><td>루프 종료 조건(미만 <code>&lt;</code> vs 이하 <code>&lt;=</code>) 1차이 오답 방지</td></tr>
+<tr><td><b>상속/객체</b></td><td>다중 상속 가능, <code>self</code> 명시</td><td>단일 상속(<code>extends</code>), <code>super()</code> 체이닝</td><td>부모 생성자 기본 호출(<code>super()</code>) 실행 순서</td></tr>
+</tbody></table>`
+      },
+      {
+        title: '3. 데이터베이스 & 리눅스 핵심 공통 출제 패턴',
+        content: `<div class="concept-highlight">단답형 빈칸 채우기 및 SQL 구문 작성, 쉘 명령어 조합 문제 완벽 대응 전략</div>
+<ul class="concept-list">
+<li><b>SQL DDL vs DML 구분:</b> 테이블 구조 변경은 <code>ALTER</code>(DDL), 데이터 내용 변경은 <code>UPDATE</code>(DML) 절대 혼동 금지!</li>
+<li><b>조인(JOIN) 결과 예측:</b> <code>INNER JOIN</code>(교집합) vs <code>LEFT OUTER JOIN</code>(왼쪽 전체 + 오른쪽 매칭 안되면 NULL)</li>
+<li><b>리눅스 권한(chmod):</b> <code>rwx r-x r--</code> → <code>7 5 4</code> 변환 계산법은 100% 출제되는 단골 문제!</li>
+<li><b>리눅스 명령어 옵션:</b> <code>tar -cvf</code>(압축 생성), <code>tar -xvf</code>(압축 해제), <code>kill -9</code>(강제 종료)</li>
+</ul>`
+      },
+      {
+        title: '4. 고득점 합격을 위한 오답 방지 5대 원칙',
+        content: `<table class="concept-table">
+<thead><tr><th>순번</th><th>오답 방지 핵심 원칙</th><th>실제 기출 함정 예시</th></tr></thead>
+<tbody>
+<tr><td><b>1</b></td><td><b>변수 추적표(Trace Table) 작성</b></td><td>루프 회차별 변수 값 변화를 시험지에 표로 적어가며 추적</td></tr>
+<tr><td><b>2</b></td><td><b>인덱스 범위 경계값 점검</b></td><td><code>range(1, 5)</code>는 1,2,3,4 (5 미포함!), Java <code>length</code>와 마지막 인덱스 <code>length-1</code></td></tr>
+<tr><td><b>3</b></td><td><b>전위/중위/후위 순회 print 위치</b></td><td>재귀 호출 전(전위), 사이(중위), 후(후위) 위치만 보면 3초 컷</td></tr>
+<tr><td><b>4</b></td><td><b>SQL 실행 순서 준수</b></td><td>FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY</td></tr>
+<tr><td><b>5</b></td><td><b>대소문자 및 띄어쓰기 철저</b></td><td>출력 결과의 공백, 콤마, 개행 일치 여부 최종 검산</td></tr>
+</tbody></table>`
+      }
+    ]
+  },
   python: {
     icon: '🐍',
     label: 'Python',

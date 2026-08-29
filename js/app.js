@@ -15,6 +15,7 @@ import { SparringQueue, GradingEngine } from './queue.js';
 import { StorageManager } from './storage.js';
 import { TraceViewer } from './traceViewer.js';
 import { CONCEPT_DATA } from './data/concepts.js';
+import { CONCEPT_REF_DATA } from './data/conceptRef.js';
 
 class App {
   constructor() {
@@ -140,10 +141,15 @@ class App {
             <div class="mode-title">오답 노트 복습</div>
             <div class="mode-desc">틀렸던 문제와 변수 추적표(Trace Table)를 다시 확인하며 취약 유형 집중 보강.</div>
           </div>
-          <div class="glass-card mode-card" data-mode="concepts" style="border: 1px solid rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.06);">
+          <div class="glass-card mode-card" data-mode="analysis" style="border: 1px solid rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.06);">
+            <div class="mode-icon">📊</div>
+            <div class="mode-title" style="color: #67e8f9;">핵심 분석 노트</div>
+            <div class="mode-desc">기출 35제 + 변형 1,700제 분석 기반! 전체 기출 비교 및 과목별 출제 패턴/함정 총정리.</div>
+          </div>
+          <div class="glass-card mode-card" data-mode="conceptRef" style="border: 1px solid rgba(139, 92, 246, 0.4); background: rgba(139, 92, 246, 0.06);">
             <div class="mode-icon">📘</div>
-            <div class="mode-title" style="color: #67e8f9;">핵심 개념 노트</div>
-            <div class="mode-desc">기출 분석 기반 4과목 핵심 개념 총정리. 함정 포인트와 암기 체크리스트 수록!</div>
+            <div class="mode-title" style="color: #c4b5fd;">진짜 개념 노트</div>
+            <div class="mode-desc">기본서 요약 기반 필수 메서드, Java 예외 10선, SQL DDL/DML, 리눅스 쉘 명령어 완벽 총정리!</div>
           </div>
         </div>
 
@@ -170,7 +176,8 @@ class App {
         else if (mode === 'category') this.renderCategorySelect('category');
         else if (mode === 'mock') this.renderRoundSelect();
         else if (mode === 'wrong') this.startWrongNoteMode();
-        else if (mode === 'concepts') this.renderConceptNotes();
+        else if (mode === 'analysis') this.renderAnalysisNotes('overall');
+        else if (mode === 'conceptRef') this.renderConceptRef('java');
       });
     });
   }
@@ -532,12 +539,13 @@ class App {
   }
 
   // ═══════════════════════════════════════════
-  //  CONCEPT NOTES VIEWER
+  //  ANALYSIS NOTES VIEWER (핵심 분석 노트)
   // ═══════════════════════════════════════════
-  renderConceptNotes(activeTab = 'python') {
+  renderAnalysisNotes(activeTab = 'overall') {
     this.stopTimer();
     const tabs = Object.keys(CONCEPT_DATA);
-    const data = CONCEPT_DATA[activeTab];
+    const currentTab = CONCEPT_DATA[activeTab] ? activeTab : tabs[0];
+    const data = CONCEPT_DATA[currentTab];
 
     this.root.innerHTML = `
       <div class="home-screen">
@@ -546,15 +554,15 @@ class App {
         </div>
 
         <div class="concept-header">
-          <span class="concept-header-icon">📘</span>
-          <h2><span class="text-gradient">핵심 개념 노트</span></h2>
-          <p>기출 35문항 + 변형 1,700문항 분석 기반 — 4과목 핵심 압축 정리</p>
+          <span class="concept-header-icon">📊</span>
+          <h2><span class="text-gradient">핵심 분석 노트</span></h2>
+          <p>기출 35문항 + 변형 1,700문항 전수 분석 기반 — 출제 패턴, 과목별 비교 및 함정 공략</p>
         </div>
 
         <div class="concept-tabs">
           ${tabs.map(key => {
             const t = CONCEPT_DATA[key];
-            return `<div class="concept-tab ${key === activeTab ? 'active' : ''}" data-tab="${key}">
+            return `<div class="concept-tab ${key === currentTab ? 'active' : ''}" data-tab="${key}">
               ${t.icon} ${t.label}
             </div>`;
           }).join('')}
@@ -589,7 +597,89 @@ class App {
     // Tab switching
     this.$$('.concept-tab').forEach(tab => {
       tab.addEventListener('click', () => {
-        this.renderConceptNotes(tab.dataset.tab);
+        this.renderAnalysisNotes(tab.dataset.tab);
+      });
+    });
+
+    // Accordion toggle
+    this.$$('.concept-section-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const section = header.closest('.concept-section');
+        section.classList.toggle('open');
+      });
+    });
+
+    // Expand/Collapse all
+    this.$('#expandAllBtn').addEventListener('click', () => {
+      this.$$('.concept-section').forEach(s => s.classList.add('open'));
+    });
+    this.$('#collapseAllBtn').addEventListener('click', () => {
+      this.$$('.concept-section').forEach(s => s.classList.remove('open'));
+    });
+
+    this.$('#backBtn').addEventListener('click', () => this.renderHome());
+  }
+
+  // ═══════════════════════════════════════════
+  //  TRUE CONCEPT REFERENCE VIEWER (진짜 개념 노트)
+  // ═══════════════════════════════════════════
+  renderConceptRef(activeTab = 'java') {
+    this.stopTimer();
+    const tabs = Object.keys(CONCEPT_REF_DATA);
+    const currentTab = CONCEPT_REF_DATA[activeTab] ? activeTab : tabs[0];
+    const data = CONCEPT_REF_DATA[currentTab];
+
+    this.root.innerHTML = `
+      <div class="home-screen">
+        <div class="mb-lg">
+          <button class="btn btn-ghost btn-sm" id="backBtn">← 홈으로</button>
+        </div>
+
+        <div class="concept-header">
+          <span class="concept-header-icon">📘</span>
+          <h2><span class="text-gradient">진짜 개념 노트</span></h2>
+          <p>기본서 요약 노트 기반 — 문법, 메서드, SQL 구문, 쉘 명령어, 예외처리 100% 완전 정리</p>
+        </div>
+
+        <div class="concept-tabs">
+          ${tabs.map(key => {
+            const t = CONCEPT_REF_DATA[key];
+            return `<div class="concept-tab ${key === currentTab ? 'active' : ''}" data-tab="${key}">
+              ${t.icon} ${t.label}
+            </div>`;
+          }).join('')}
+        </div>
+
+        <div class="concept-controls">
+          <button class="btn btn-ghost btn-sm" id="expandAllBtn">📂 전체 펼치기</button>
+          <button class="btn btn-ghost btn-sm" id="collapseAllBtn">📁 전체 접기</button>
+        </div>
+
+        <div id="conceptSections">
+          ${data.sections.map((sec, idx) => `
+            <div class="concept-section glass-card ${idx === 0 ? 'open' : ''}" data-idx="${idx}">
+              <div class="concept-section-header">
+                <span class="concept-section-title">${sec.title}</span>
+                <span class="concept-section-toggle">▼</span>
+              </div>
+              <div class="concept-section-body">
+                ${sec.content}
+                ${sec.trap ? `
+                <div class="concept-trap">
+                  <span class="concept-trap-icon">⚠️</span>
+                  <div class="concept-trap-text"><b>개념 주의:</b> ${sec.trap}</div>
+                </div>` : ''}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+
+    // Tab switching
+    this.$$('.concept-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        this.renderConceptRef(tab.dataset.tab);
       });
     });
 
