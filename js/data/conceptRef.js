@@ -152,6 +152,32 @@ export const CONCEPT_REF_DATA = {
 <tr><td><b>ROLLBACK</b></td><td><code>ROLLBACK [TO SAVEPOINT명];</code></td><td>트랜잭션 작업 실패 시 이전 상태 또는 지정된 SAVEPOINT로 원상 복구</td></tr>
 <tr><td><b>SAVEPOINT</b></td><td><code>SAVEPOINT 세이브포인트명;</code></td><td>트랜잭션 내에서 롤백할 수 있는 체크포인트(저장점) 지정</td></tr>
 </tbody></table>`
+      },
+      {
+        title: '4. 관계형 데이터베이스 5대 키(Key) 완벽 비교 ⭐⭐⭐',
+        content: `<div class="concept-highlight">튜플(행)을 고유하게 식별하기 위한 속성 또는 속성들의 집합</div>
+<table class="concept-table">
+<thead><tr><th>키 종류</th><th>유일성 (Uniqueness)</th><th>최소성 (Minimality)</th><th>핵심 정의 및 시험 출제 포인트</th></tr></thead>
+<tbody>
+<tr><td><b>슈퍼키 (Super Key)</b></td><td>✅ 만족</td><td>❌ 불만족</td><td>튜플을 유일하게 식별할 수 있지만, 불필요한 속성이 포함되어 최소성을 만족하지 않는 키 (예: <code>(학번, 주민번호, 이름)</code>)</td></tr>
+<tr><td><b>후보키 (Candidate Key)</b></td><td>✅ 만족</td><td>✅ 만족</td><td>튜플을 유일하게 식별할 수 있는 <b>최소한의 속성 집합</b> (예: <code>학번</code>, <code>주민번호</code>)</td></tr>
+<tr><td><b>기본키 (Primary Key, PK)</b></td><td>✅ 만족</td><td>✅ 만족</td><td>후보키 중 특별히 선정된 <b>주 키</b>.<br>• <b>NULL 값 절대 불가 (Not Null)</b><br>• <b>중복 값 절대 불가 (Unique)</b></td></tr>
+<tr><td><b>대체키 (Alternate Key)</b></td><td>✅ 만족</td><td>✅ 만족</td><td>후보키 중 <b>기본키로 선택되지 못하고 남은</b> 보조 키 (예: 학번이 기본키면 주민번호는 대체키)</td></tr>
+<tr><td><b>외래키 (Foreign Key, FK)</b></td><td colspan="2">참조 대상에 따라 다름</td><td>다른 릴레이션(테이블)의 <b>기본키를 참조하는 속성</b>.<br>• <b>참조 무결성 제약조건</b>의 기준이 됨<br>• 참조 테이블의 기본키 값과 동일하거나 <b>NULL</b>이어야 함</td></tr>
+</tbody></table>
+<div class="code-block"><pre>포함 관계: 슈퍼키 &supset; 후보키 &supset; 기본키, 대체키</pre></div>`,
+        trap: '<b>슈퍼키 vs 후보키:</b> "유일성은 만족하지만 최소성은 만족하지 않는다" → <b>슈퍼키</b>!<br><b>기본키의 필수 조건:</b> <code>NOT NULL</code> + <code>UNIQUE</code> (개체 무결성)'
+      },
+      {
+        title: '5. 관계형 데이터베이스 4대 무결성(Integrity) 제약조건',
+        content: `<table class="concept-table">
+<thead><tr><th>무결성 제약조건</th><th>적용 대상</th><th>핵심 내용 및 위반 예시</th></tr></thead>
+<tbody>
+<tr><td><b>개체 무결성<br>(Entity Integrity)</b></td><td>기본키 (PK)</td><td>기본키는 <b>NULL 값을 가질 수 없으며, 중복될 수 없다</b>.<br>• 위반: 학번이 기본키인데 <code>NULL</code>이거나 이미 존재하는 학번 입력</td></tr>
+<tr><td><b>참조 무결성<br>(Referential Integrity)</b></td><td>외래키 (FK)</td><td>외래키 값은 참조하는 테이블의 <b>기본키 값과 일치하거나 NULL이어야 한다</b>.<br>• 위반: 부서 테이블에 없는 '999'번 부서 코드를 사원 테이블에 입력</td></tr>
+<tr><td><b>도메인 무결성<br>(Domain Integrity)</b></td><td>개별 속성(컬럼)</td><td>속성 값은 정의된 <b>도메인 범위(데이터 타입, 길이, CHECK 조건 등)에 속한 유효한 값</b>이어야 한다.<br>• 위반: 나이 컬럼에 음수 입력 또는 성별에 'M/F' 외의 문자 입력</td></tr>
+<tr><td><b>사용자 정의 무결성</b></td><td>비즈니스 규칙</td><td>사용자가 지정한 특별한 업무 규칙이나 조건을 만족해야 한다. (<code>CHECK</code> 구문 등)</td></tr>
+</tbody></table>`
       }
     ]
   },

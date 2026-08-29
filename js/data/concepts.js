@@ -420,25 +420,25 @@ WHERE c1 NOT IN (SELECT c1 FROM t1);
 </tbody></table>`
       },
       {
-        title: '8. 제약조건 & DCL/TCL',
-        content: `<table class="concept-table">
-<thead><tr><th>제약조건</th><th>설명</th></tr></thead>
+        title: '8. 관계형 데이터베이스 키(Key) 5종 & 무결성 제약조건 ⭐⭐⭐',
+        content: `<div class="concept-highlight">기출 단답형 1순위: 키의 유일성/최소성 조건과 4대 무결성 제약조건 완벽 정리</div>
+<table class="concept-table">
+<thead><tr><th>키(Key) 종류</th><th>유일성</th><th>최소성</th><th>정의 및 핵심 특징</th></tr></thead>
 <tbody>
-<tr><td><code>PRIMARY KEY</code></td><td>기본키 = <b>UNIQUE + NOT NULL</b></td></tr>
-<tr><td><code>FOREIGN KEY</code></td><td>외래키 = 다른 테이블 참조</td></tr>
-<tr><td><code>UNIQUE</code></td><td>중복 불허</td></tr>
-<tr><td><code>NOT NULL</code></td><td>NULL 불허</td></tr>
-<tr><td><code>CHECK</code></td><td>값의 유효 범위 제한</td></tr>
-<tr><td><code>DEFAULT</code></td><td>기본값 지정</td></tr>
+<tr><td><b>슈퍼키 (Super Key)</b></td><td>✅</td><td>❌</td><td>튜플을 고유하게 식별하지만 불필요한 속성이 포함된 키 (최소성 X)</td></tr>
+<tr><td><b>후보키 (Candidate Key)</b></td><td>✅</td><td>✅</td><td>튜플을 유일하게 식별할 수 있는 <b>최소 속성 집합</b> (유일성 + 최소성 모두 만족)</td></tr>
+<tr><td><b>기본키 (Primary Key)</b></td><td>✅</td><td>✅</td><td>후보키 중 대표로 선택된 주 키. <b>중복 불가(Unique) + NULL 불가(Not Null)</b></td></tr>
+<tr><td><b>대체키 (Alternate Key)</b></td><td>✅</td><td>✅</td><td>후보키 중 기본키로 선택되지 않고 남은 보조 키</td></tr>
+<tr><td><b>외래키 (Foreign Key)</b></td><td colspan="2">참조 대상에 따름</td><td>다른 테이블의 기본키를 참조하는 속성 (<b>참조 무결성</b>의 기준)</td></tr>
 </tbody></table>
 <table class="concept-table mt-md">
-<thead><tr><th>명령어</th><th>분류</th><th>기능</th></tr></thead>
+<thead><tr><th>무결성 원칙</th><th>적용 대상</th><th>핵심 규칙</th></tr></thead>
 <tbody>
-<tr><td><code>GRANT</code></td><td>DCL</td><td>권한 <b>부여</b></td></tr>
-<tr><td><code>REVOKE</code></td><td>DCL</td><td>권한 <b>회수</b></td></tr>
-<tr><td><code>COMMIT</code></td><td>TCL</td><td>트랜잭션 <b>확정</b></td></tr>
-<tr><td><code>ROLLBACK</code></td><td>TCL</td><td>트랜잭션 <b>취소/복구</b></td></tr>
-</tbody></table>`
+<tr><td><b>개체 무결성 (Entity)</b></td><td>기본키 (PK)</td><td>기본키는 <b>NULL이 될 수 없고, 중복될 수 없다</b></td></tr>
+<tr><td><b>참조 무결성 (Referential)</b></td><td>외래키 (FK)</td><td>외래키는 <b>참조 테이블의 기본키 값과 같거나 NULL</b>이어야 한다</td></tr>
+<tr><td><b>도메인 무결성 (Domain)</b></td><td>개별 속성</td><td>속성 값은 정의된 <b>도메인 범위 내의 값</b>이어야 한다</td></tr>
+</tbody></table>`,
+        trap: '<b>"유일성은 만족하나 최소성은 만족하지 않는다"</b> → 무조건 <b>슈퍼키</b>!<br><b>기본키 제약:</b> <code>PRIMARY KEY = UNIQUE + NOT NULL</code> (개체 무결성)'
       }
     ]
   },
